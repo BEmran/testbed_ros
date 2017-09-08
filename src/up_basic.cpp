@@ -70,8 +70,8 @@ void *sensorsThread(void *data) {
     Encoder En2 (0, 2, 10000, QUAD_X4);
 
     //------------------------------------------  Main loop --------------------------------------------
-    SamplingTime st(_SENSOR_FREQ);
-    float dt, dtsumm = 0;
+    SamplingTime ts(_SENSOR_FREQ);
+    float dtsumm = 0;
     while (!_CloseRequested) {
 
         //-------------------------------------- Read Sensor -----------------------------------------
@@ -80,11 +80,10 @@ void *sensorsThread(void *data) {
         my_data->encoderes[2]  = unfoldYaw(En2.getAngleRad() * YSign, my_data->encoderes[2], &my_data->yaw_fold);
 
         //----------------------------------- Display values ------------------------------------------
-
-        dt = st.tsCalculat();
+        dtsumm+=  ts.tsCalculat();
         if (dtsumm > 1) {
             dtsumm = 0;
-            ROS_INFO("er = %+2.2f\t ep = %+2.2f\t ew = %+2.2f\t", my_data->encoderes[0], my_data->encoderes[1],  my_data->encoderes[2]);
+            ROS_INFO("r = %+2.2f\t p = %+2.2f\t w = %+2.2f\t", my_data->encoderes[0], my_data->encoderes[1],  my_data->encoderes[2]);
         }
     }
 
@@ -104,20 +103,20 @@ void *rosNodeThread(void *data) {
     //---------------------------------------- Initialize ROS -----------------------------------------
     ros::init(my_data->argc,my_data->argv,"up_basic");
     ros::NodeHandle n;
-    ros::Publisher encoder_pub = n.advertise <geometry_msgs::Vector3Stamped>("testbed/sensors/encoderes", 1000);
+    ros::Publisher encoder_pub = n.advertise <geometry_msgs::Vector3Stamped>("testbed/sensors/encoders", 1000);
     ros::Rate loop_rate(_ROS_FREQ);
-    geometry_msgs::Vector3Stamped encoderes;
+    geometry_msgs::Vector3Stamped enc_msg;
 
     //------------------------------------------  Main loop -------------------------------------------
     while (ros::ok() && !_CloseRequested)
     {
         //------------------------------  Prepare encoderes msg ----------------------------------
-        encoderes.header.stamp = ros::Time::now();
-        encoderes.header.seq++;
-        encoderes.vector.x = my_data->encoderes[0];
-        encoderes.vector.y = my_data->encoderes[1];
-        encoderes.vector.z = my_data->encoderes[2];
-        encoder_pub.publish(encoderes);
+        enc_msg.header.stamp = ros::Time::now();
+        enc_msg.header.seq++;
+        enc_msg.vector.x = my_data->encoderes[0];
+        enc_msg.vector.y = my_data->encoderes[1];
+        enc_msg.vector.z = my_data->encoderes[2];
+        encoder_pub.publish(enc_msg);
 
         ros::spinOnce();
         loop_rate.sleep();

@@ -27,7 +27,7 @@ Header files
 Global variables
 ******************************************************************************************/
 #define _SENSOR_FREQ 500        // Sensor thread frequency in Hz
-#define _ROS_FREQ 100                // ROS thread frequency in Hz
+#define _ROS_FREQ 250                // ROS thread frequency in Hz
 #define RSign +1.0
 #define PSign +1.0
 #define YSign -1.0
