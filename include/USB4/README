@@ -1,0 +1,46 @@
+libusdusb4 v1.3
+---------------
+
+You will find three tar files in the release folder:
+
+   - libusdusb4_1.3_i386.deb
+   - libusdusb4_1.3_amd64.deb
+   - usb4_linux_demos.tar.gz
+
+The first two are identical other than being specifically 
+compiled for 32-bit or 64-bit platforms. They include the
+driver library and other files required to configure
+the USB4. 
+
+
+Installation
+------------
+The packages will correctly install on Ubuntu Desktop 
+12.04.5 LTS or later. Although they should also work fine 
+on other Debian-based distributions, such usage is not 
+supported.
+
+To install use dpkg:
+
+  sudo dpkg -i libusdusb4_1.3_nnnn.deb
+
+substituting the name of the appropriate package.
+
+Upon installation, the library can be found in /usr/lib 
+and the include file in /usr/include.
+
+The user manual, along with the copyright information, 
+is located in /usr/share/doc/libusdusb4.
+
+
+Demos
+-----
+usb4_linux_demos.tar.gz contains some samples of how to use
+several of the USB4 features. For your convenience, each 
+sample includes a CMakeLists.txt file to generate build
+scripts using cmake. Their use is completely optional and
+the source files can be compiled with any other preferred
+build mechanism.
+
+A full API reference is available in the user's manual.
+
