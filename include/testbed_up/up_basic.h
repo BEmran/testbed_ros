@@ -54,7 +54,7 @@ Functions prototype
 void *sensorsThread(void *data);
 void *rosNodeThread(void *data);
 void ctrlCHandler(int signal);
-float unfoldYaw (float yaw_new, float yaw_old, int *n);
+float unfoldYaw (float yaw_new, float yaw_old, int* n);
 
 #endif // UP_BASIC
 

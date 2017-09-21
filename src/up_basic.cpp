@@ -3,8 +3,8 @@
  * Author: Bara Emran
  * Created on September 9, 2017, 12:44 PM
  */
-#include "../include/testbed_up/up_basic.h"
-
+#include "testbed_up/up_basic.h"
+#include <cmath>
 /*****************************************************************************************
 main: Run main function
  ****************************************************************************************/
@@ -131,10 +131,11 @@ void *rosNodeThread(void *data) {
 /*****************************************************************************************
  unfoldYaw: Unfold yaw angle
  *****************************************************************************************/
-float unfoldYaw (float yaw_new, float yaw_old, int* n){
-    if ((yaw_new - yaw_old) > 6.0)
-        *n = *n  - 1;
-    else if ((yaw_new - yaw_old) < -6.0)
-        *n = *n  + 1;
-    return (*n * 2 * PI + yaw_new);
+float unfoldYaw (float encoder_new, float yaw_old, int* n){
+    float encoder_old = yaw_old - *n * 2 * PI; // get old encoder data before folding
+    if ((encoder_new-encoder_old)>6.0)         // if encoder data jumped from - to +
+        *n = *n - 1;
+    if ((encoder_new-encoder_old)<-6.0)	       // if encoder data jumbed from + to -
+        *n = *n + 1;
+    return encoder_new + *n * 2 * PI;	       // fold encoder data
 }
