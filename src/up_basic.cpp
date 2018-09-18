@@ -3,7 +3,7 @@
  * Author: Bara Emran
  * Created on September 9, 2017, 12:44 PM
  */
-#include "testbed_up/up_basic.h"
+#include "../../testbed_up/include/testbed_up/up_basic.h"
 #include <cmath>
 /*****************************************************************************************
 main: Run main function
@@ -69,8 +69,9 @@ void *sensorsThread(void *data) {
     Encoder En1 (0, 1, 10000, QUAD_X4);
     Encoder En2 (0, 2, 10000, QUAD_X4);
 
-    //------------------------------------------  Main loop --------------------------------------------
-    SamplingTime ts(_SENSOR_FREQ);
+    //------------------------------------------  Main loop ---------------------------------------
+    TimeSampling ts(100);
+    //TimeSampling ts (_SENSOR_FREQ);
     float dtsumm = 0;
     while (!_CloseRequested) {
 
@@ -80,7 +81,7 @@ void *sensorsThread(void *data) {
         my_data->encoderes[2]  = unfoldYaw(En2.getAngleRad() * YSign, my_data->encoderes[2], &my_data->yaw_fold);
 
         //----------------------------------- Display values ------------------------------------------
-        dtsumm+=  ts.tsCalculat();
+        dtsumm+=  ts.updateTs();
         if (dtsumm > 1) {
             dtsumm = 0;
             ROS_INFO("r = %+2.2f\t p = %+2.2f\t w = %+2.2f\t", my_data->encoderes[0], my_data->encoderes[1],  my_data->encoderes[2]);
@@ -137,5 +138,5 @@ float unfoldYaw (float encoder_new, float yaw_old, int* n){
         *n = *n - 1;
     if ((encoder_new-encoder_old)<-6.0)	       // if encoder data jumbed from + to -
         *n = *n + 1;
-    return encoder_new + *n * 2 * PI;	       // fold encoder data
+    return encoder_new + *n * 2 * PI;	         // fold encoder data
 }

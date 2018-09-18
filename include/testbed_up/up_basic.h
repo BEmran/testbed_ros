@@ -17,8 +17,8 @@ Header files
 #include <pthread.h>   // create thread
 
 #include "lib/Encoder.h"         // Encoder class
-#include "lib/libusdusb4.h"    // USB4 lib
-#include "lib/SamplingTime.h"    // samplig time
+#include "lib/libusdusb4.h"      // USB4 lib
+#include "../../testbed_up/include/lib/TimeSampling.h"    // samplig time
 
 #include "ros/ros.h"
 #include <geometry_msgs/Vector3Stamped.h>   // encoder msg
