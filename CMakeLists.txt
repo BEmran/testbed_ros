@@ -23,6 +23,7 @@ include_directories(
 add_library(${PROJECT_NAME}
   include/lib/Encoder.cpp
   include/lib/TimeSampling.cpp
+  include/${PROJECT_NAME}/ros_node.cpp
 )
 
 ## Declare a catkin package
